@@ -11,10 +11,10 @@ wyskakuje komunikat o stanie zdrowia wilka i poszukiwacza oraz o lista dostępny
 Po turze użytkownika wilk zadaje obrażenia po czym nastaje kolejna tura. Walka trwa do momentu zbicia paska zdrowia przez jednego z walczących."
 Gra wraz z czasem może być rozbudowywana o dodatkowy kontent.
 
-#Gra będzie zawierać:
-	- ekwipunek
-	- elementy eksploracji
-	- system walki turowej
-	- losowo generowane przygody
-	- bot będzie zapamiętywał stan użytkownika, jego ekwipunek i postęp
-	- rozwój postaci
+# Gra będzie zawierać:
+- ekwipunek
+- elementy eksploracji
+- system walki turowej
+- losowo generowane przygody
+- bot będzie zapamiętywał stan użytkownika, jego ekwipunek i postęp
+- rozwój postaci
