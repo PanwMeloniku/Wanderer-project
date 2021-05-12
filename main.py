@@ -9,7 +9,7 @@
 #https://stackoverflow.com/questions/59570301/how-can-i-make-my-discord-bot-respond-to-the-correct-answer
 #https://pythonexamples.org/convert-python-class-object-to-json/
 
-
+#tralalala jest gitarrra
 
 # Imports
 import discord
