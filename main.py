@@ -8,23 +8,28 @@
 #https://stackoverflow.com/questions/176918/finding-the-index-of-an-item-in-a-list
 #https://stackoverflow.com/questions/59570301/how-can-i-make-my-discord-bot-respond-to-the-correct-answer
 #https://pythonexamples.org/convert-python-class-object-to-json/
+#https://www.writebots.com/discord-text-formatting/
 
-#tralalala jest gitarrra
+
 
 # Imports
-import discord
+#import discord
 import asyncio
-import Class
 from discord.ext import commands
-import save_and_insert_progress as saip
 import os
+import random
+import json
+#własne pliki zewnętrzne
+import save_and_insert_progress as saip
+import Class
+import combat
+#import test
 
 r_token = open("token.txt", "r")
 TOKEN = r_token.readline()
 r_token.close()
 
 client = commands.Bot(command_prefix='!')
-gracze = []
 
 
 
@@ -32,32 +37,24 @@ gracze = []
 #********** Funkcje ogólne *************
 #***************************************
 
-def stats(name, new = False):
+def c_hp(player):
+    return (f"{player.hp}/{player.health}")
+
+def stats(player, new = False):
     newl = "\n"
     end = "```"
     stat_message = "```"
-    stat_attack = "Atak: " + str(name.attack)
-    stat_deffence = "Obrona: " + str(name.deffence)
-    stat_health = "Życie: " + str(name.health)
-    stat_stamina = "Kondycja: " + str(name.stamina)
-    stat_mana = "Moc: " + str(name.mana)
-    stat_luck = "Szczęście: " + str(name.luck)
+    stat_attack = "Atak: " + str(player.attack)
+    stat_deffence = "Obrona: " + str(player.deffence)
+    stat_health = "Życie: " + c_hp(player)
+    stat_stamina = "Kondycja: " + str(player.stamina)
+    stat_mana = "Moc: " + str(player.mana)
+    stat_luck = "Szczęście: " + str(player.luck)
 
     if new:
-        stat_message += name.kind + 2 * newl + name.description
+        stat_message += player.kind + 2 * newl + player.description
     stat_message = stat_message + newl + 'Statystyki:' + newl + stat_attack + newl + stat_deffence + newl + stat_health + newl + stat_stamina + newl + stat_mana + newl + stat_luck + newl + end
     return stat_message
-
-
-def fight_round(player1, player2, whoose_turn):
-    players = [player1, player2]
-   #""" if players[whoose_turn].id == 0:
-        #Funkcja Bot
-   #     pass
-    #else:
-    #    """
-
-
 
 @client.event
 async def on_ready():
@@ -74,12 +71,12 @@ async def on_message(message):
 @client.command()
 async def helloworld(ctx, lang = ""):
     if lang == "":
-        await ctx.send('Hello World!');
+        await ctx.send('Hello World!')
     else:
         if lang == "pl":
-            await ctx.send('Witaj świecie!');
+            await ctx.send('Witaj świecie!')
         elif lang == "de":
-            await ctx.send('Hallo Welt!');
+            await ctx.send('Hallo Welt!')
 
 
 
@@ -104,7 +101,8 @@ async def choose_ch(ctx, character_class):
     class_dict = {
         'poacher': Class.Poacher(),
         'rascal': Class.Rascal(),
-        'serf': Class.Serf()
+        'serf': Class.Serf(),
+        'spider': Class.Spider()
     }
     yes_emote = False
 
@@ -129,25 +127,47 @@ async def choose_ch(ctx, character_class):
         new_hero = class_dict[character_class]
         new_hero.id = player_id
         saip.data_packing(new_hero)
-    hero = saip.get_stats(player_id)
+        saip.player_list(ctx.author.name, ctx.author.id)
+    hero = saip.data_unpacking(player_id)
     await ctx.send(str(hero.attack))
 
-#-------!!>>Tu skończyłeś, miałeś rozkmine co do walki jak ma przebiegać (Wrzuć to do innych plików) [bot działa]<<!!----------
+@client.command()
+async def statystyki(ctx, player_id):
+    if not player_id.isdigit():
+        with open("players/list_of_players.json") as file:
+            player_dict = json.load(file)
+        if player_id in player_dict:
+            player_id = player_dict[player_id]
+        else:
+            await ctx.send("Nie ma w bazie użytkownika o takim Nicku")
+    player = saip.data_unpacking(player_id)
+    await ctx.send(stats(player))
+
+#-------!!>>Tu skończyłeś, miałeś rozkmine co do walki jak ma przebiegać [bot działa]<<!!----------
 @client.command()
 async def fight(ctx):
-    pl_index = 0
-    for gracz in gracze:
-        if gracz.id == ctx.author.id:
-            pl_index = gracze.index(gracz)
-            break
-    gracz = gracze[pl_index]
-    spider = Class.Spider()
-    gracz_hp = gracz.health
-    enemy_hp = spider.health
-    await ctx.send(f"w przygodzie na przeciwko stanął {spider.kind}")
-    await ctx.send(f"{gracz.kind}\t\t\t\t\t\t{spider.kind}\n{gracz_hp}/{gracz.health}\t\t\t\t\t\t{enemy_hp}/{spider.health}")
+    players = [saip.data_unpacking(ctx.author.id), Class.Spider()]
+    await ctx.send(f"Podczas podróży drogę zagrodził ci {players[1].kind}")
+    await ctx.send(f"{players[0].kind}\t\t\t\t\t\t{players[1].kind}\n{c_hp(players[0])}\t\t\t\t\t\t{c_hp(players[1])}")
 
+    text_turn = ["Twoja tura", "Tura przeciwnika"]
+    whoose_turn = random.randint(0, 1)
+    other_one = (whoose_turn + 1) % 2
+    print("______")
+    while not(combat.is_dead(players[other_one])):
+        other_one = whoose_turn
+        whoose_turn = (whoose_turn + 1) % 2
 
+        await ctx.send(text_turn[whoose_turn])
+        players[other_one], reaction_message = combat.attack_action(players[whoose_turn], players[other_one])
+        await ctx.send(reaction_message)
+        await asyncio.sleep(2)
+        print("______")
 
+    if combat.is_dead(players[other_one]) and players[other_one].id != players[0].id:
+        await ctx.send(f"Wygrałeś\nZostało ci {c_hp(players[0])}")
+    else:
+        await ctx.send("Wąchasz kwiatki od spodu")
+    saip.data_packing(players[0])
 
 client.run(TOKEN)
