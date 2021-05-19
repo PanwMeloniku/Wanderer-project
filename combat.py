@@ -4,7 +4,6 @@ def attack_action(attacker, deffender):
     chance_for_damage = deffender.deffence * 100.0 / (attacker.attack + deffender.deffence) #%
     if random.randint(1, 100) >= chance_for_damage:
         RNG = random.randint(1, 100) + attacker.luck - deffender.luck
-        print(RNG)
         if RNG <= 5.0:                                                                    #słaby cios
             if random.randint(0, 1) == 1:
                 damage = attacker.attack / 2
@@ -25,7 +24,6 @@ def attack_action(attacker, deffender):
         text = "Nie udało się przebić pancerza"
     deffender.hp -= damage
     deffender.hp = round(deffender.hp, 2)
-    print(deffender.hp)
     return deffender, text
 
 def is_dead(player):
