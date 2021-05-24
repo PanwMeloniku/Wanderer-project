@@ -1,5 +1,4 @@
 import json
-#import Class
 import class2_0
 import os
 
@@ -22,7 +21,7 @@ def data_unpacking(person, file_path = 'players/'):
             #konwersja obiektu JSONowego na słownik Pythonowski
             data = json.load(f)
         #tworzenie obiektu przekazując do konstruktora pobrane dane
-        if str(person).isdigit():
+        if not hasattr(person, "loot"):
             player_obj = class2_0.Hero(data['attack'], data['deffence'], data['health'], data['hp'], data['mana'], data['stamina'], data['luck'], data['kind'], data['description'])
             player_obj.id = data['id']
             player_obj.lvl = data['lvl']

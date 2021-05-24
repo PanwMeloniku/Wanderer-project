@@ -52,12 +52,13 @@ class Hero(Character):
         for elem in self.bag:
             if self.bag[elem] == 0 and elem != 'monety':
                 del self.bag[elem]
-        monety = self.bag['monety']
+        new_bag = {'monety': self.bag['monety']}
         del self.bag['monety']
         sorted_bag = sorted(self.bag)
-        self.bag.clear()
-        self.bag['monety'] = monety
-        self.bag.update(sorted_bag)
+        for i in sorted_bag:
+            new_bag[i] = self.bag[i]
+        self.bag = new_bag
+        print(f'Posortowane przedmioty: {self.bag}')
 
 class Creature(Character):
     def __init__(self, exp, attack, deffence, health, hp, mana, stamina, luck, kind, description = "..."):

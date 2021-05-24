@@ -1,21 +1,4 @@
-#ścieżka do odpalenia bota:
-#cd Desktop/UWR/SEMESTR 2/Bot_discord
-#potem odpalasz nazwą pliku głównego
-#python main.py
-
-
-#linki fajne
-#https://stackoverflow.com/questions/176918/finding-the-index-of-an-item-in-a-list
-#https://stackoverflow.com/questions/59570301/how-can-i-make-my-discord-bot-respond-to-the-correct-answer
-#https://stackoverflow.com/questions/3253966/python-string-to-attribute
-#https://pythonexamples.org/convert-python-class-object-to-json/
-#https://www.writebots.com/discord-text-formatting/
-#do Znajdywania Emoji
-#https://unicode.org/emoji/charts/full-emoji-list.html#1f496
-
-
-
-# Imports
+# &&&&&&&&&&&&> Imports <&&&&&&&&&&&
 #import discord
 import asyncio
 from discord.ext import commands
@@ -24,7 +7,6 @@ import random
 import json
 #własne pliki zewnętrzne
 import save_and_insert_progress as saip
-from museum import Class
 import combat
 import class2_0
 #import test
@@ -46,12 +28,8 @@ r_token.close()
 
 client = commands.Bot(command_prefix='!')
 
-
-
 #***************************************
 #********** Funkcje ogólne *************
-
-
 
 
 def equal_spacing(list_of_words):
@@ -129,8 +107,6 @@ async def helloworld(ctx, lang = ""):
         elif lang == "de":
             await ctx.send('Hallo Welt!')
 
-
-
 @client.command()
 async def manual(ctx):
     powitanie = 'Witaj w świecie lejącej się juchy, parszywych kreatur i brudnych trolów (na księżniczni zabrakło budżetu)\n'
@@ -139,15 +115,15 @@ async def manual(ctx):
 
 @client.command()
 async def newcharacter(ctx):
-    poacher = Class.Poacher()
-    rascal = Class.Rascal()
-    serf = Class.Serf()
+    poacher = saip.data_unpacking("poacher", "templates_characters/classes/")
+    rascal = saip.data_unpacking("rascal", "templates_characters/classes/")
+    serf = saip.data_unpacking("serf", "templates_characters/classes/")
     nc_choice = 'Wybierz klasę postaci którą będziesz przemieżał pustkowia i knieje\n'
     nc_choice2 = '\nAby wybrać klasę pisz **`!choose_ch poacher/rascal/serf`** (wybierz jedno)'
     await ctx.send(nc_choice+stats(poacher, True)+stats(rascal, True)+stats(serf, True)+nc_choice2)
 
 @client.command()
-async def sp_distribut(ctx):        #skillpoints distributing
+async def sp_distribute(ctx):        #skillpoints distributing
     player = saip.data_unpacking(ctx.author.id)
     while player.available_skillpoints > 0:
         info = await ctx.send(f'Masz {player.available_skillpoints} punktów umiejętności do rozdysponowania. (jeśli nie chcesz już rozdawać punktów, kliknij ⛔')
@@ -248,7 +224,6 @@ async def statystyki(ctx, player_id):
     player = saip.data_unpacking(player_id)
     await ctx.send(stats(player))
 
-#-------!!>>Tu skończyłeś, miałeś rozkmine co do walki jak ma przebiegać [bot działa]<<!!----------
 @client.command()
 async def fight(ctx):
     players = [saip.data_unpacking(ctx.author.id), saip.data_unpacking('spider', 'templates_characters/enemies/')]
@@ -265,6 +240,7 @@ async def fight(ctx):
 
         await ctx.send(text_turn[whoose_turn])
         players[other_one], reaction_message = combat.attack_action(players[whoose_turn], players[other_one])
+        print(f'Gracz {other_one} ma {players[other_one].hp}życia')
         await ctx.send(reaction_message)
         await asyncio.sleep(2)
     if combat.is_dead(players[other_one]) and players[other_one].id != players[0].id:
