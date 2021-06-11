@@ -13,8 +13,7 @@ Gra wraz z czasem może być rozbudowywana o dodatkowy kontent.
 
 # Gra będzie zawierać:
 - ekwipunek
-- elementy eksploracji
+- sklep
 - system walki turowej
-- losowo generowane przygody
 - bot będzie zapamiętywał stan użytkownika, jego ekwipunek i postęp
 - rozwój postaci
