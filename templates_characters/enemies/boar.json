@@ -1,0 +1,16 @@
+{
+  "id": 0,
+  "attack": 3.0,
+  "deffence": 3.0,
+  "health": 8.0,
+  "hp": 8.0,
+  "mana": 0.0,
+  "stamina": 8.0,
+  "luck": 1.0, "kind":"dzik",
+  "description": "...",
+  "exp": 70,
+  "loot": [
+    {"name":  "money", "amount":  55, "rarity":  1},
+    {"name":  "fur", "amount":  2, "rarity":  1}
+  ]
+}

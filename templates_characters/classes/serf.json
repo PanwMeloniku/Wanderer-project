@@ -1,1 +1,16 @@
-{"id": 0, "attack": 5.0, "deffence": 6.0, "health": 15.0, "hp": 15.0, "mana": 0.0, "stamina": 15.0, "luck": 1.0, "kind": "kmie\u0107", "description": "...", "lvl": 1, "exp": [0, 1024], "bag": {"monety": 0}, "available_skillpoints": 0}
+{
+  "id": 0,
+  "attack": 5.0,
+  "deffence": 6.0,
+  "health": 15.0,
+  "hp": 15.0,
+  "mana": 0.0,
+  "stamina": 15.0,
+  "luck": 1.0,
+  "kind": "kmie\u0107",
+  "description": "Jako t\u0119gi ch\u0142op pa\u0144szczy\u017Aniany ora\u0142e\u015B pole, dogl\u0105da\u0142e\u015B kur a czasem nawet spali\u0142e\u015B czarownice. Niestety, zazdrosny s\u0105siad rzuci\u0142 plotk\u0119, \u017Ce i ty uprawiasz czary, za co postanowili spali\u0107 ci\u0119 z twoim dorobkiem. Uda\u0142o ci si\u0119 uratowa\u0107 lecz pozbawili ci\u0119 wszystkiego...\n",
+  "lvl": 1,
+  "exp": [0, 512],
+  "bag": {"money": 0},
+  "available_skillpoints": 0
+}

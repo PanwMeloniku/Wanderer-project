@@ -19,8 +19,8 @@ class Hero(Character):
         super().__init__(attack, deffence, health, hp, mana, stamina, luck, kind, description)
 
         self.lvl = 1
-        self.exp = [0, 1024]
-        self.bag = {'monety': 0}
+        self.exp = [0, 512]
+        self.bag = {'money': 0}
         self.available_skillpoints = 0
 
     def lvlup(self, exp_points):
@@ -48,17 +48,17 @@ class Hero(Character):
                     self.bag[item] = loot[item]
         self.sort_bag()
 
+    def remove_from_bag(self, item, amount = 1):
+        self.bag.update({item: self.bag[item] - amount})
+        self.sort_bag()
+
     def sort_bag(self):
-        for elem in self.bag:
-            if self.bag[elem] == 0 and elem != 'monety':
-                del self.bag[elem]
-        new_bag = {'monety': self.bag['monety']}
-        del self.bag['monety']
+        new_bag = {'money': self.bag['money']}
         sorted_bag = sorted(self.bag)
         for i in sorted_bag:
-            new_bag[i] = self.bag[i]
+            if self.bag[i] != 0 and i != 'money':
+                new_bag[i] = self.bag[i]
         self.bag = new_bag
-        print(f'Posortowane przedmioty: {self.bag}')
 
 class Creature(Character):
     def __init__(self, exp, attack, deffence, health, hp, mana, stamina, luck, kind, description = "..."):
@@ -74,4 +74,6 @@ class Creature(Character):
             amount = loot['amount']
             rarity = loot['rarity']
             if (random.randint(1, 100) + luck) >= (rarity * 10 + 10):
-                self.loot[item] = int((amount * 0.5) + (random.random() * amount))
+                final_a = int((amount * 0.5) + (random.random() * amount))
+                if final_a > 0:
+                    self.loot[item] = final_a

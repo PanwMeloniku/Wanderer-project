@@ -1,0 +1,16 @@
+{
+  "id": 0,
+  "attack": 5.0,
+  "deffence": 3.5,
+  "health": 10.0,
+  "hp": 10.0,
+  "mana": 0.0,
+  "stamina": 12.5,
+  "luck": 2.0, "kind":"bia\u0142y wilk",
+  "description": "...",
+  "exp": 100,
+  "loot": [
+    {"name":  "money", "amount":  80, "rarity":  1},
+    {"name":  "white_wolf_fur", "amount":  1, "rarity":  2}
+  ]
+}
